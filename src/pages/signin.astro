@@ -5,7 +5,9 @@ import { Input } from "@/components/ui/input";
 import Layout from "./_layout.astro";
 
 const result = Astro.getActionResult(actions.signIn);
+console.log("result: ", result);
 if (result?.data) return Astro.redirect(`/admin`);
+
 let flow = "signIn";
 const setFlow = (newFlow: "signIn" | "signUp") => {
 	flow = newFlow;
