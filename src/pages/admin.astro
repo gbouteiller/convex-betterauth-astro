@@ -1,0 +1,27 @@
+---
+import { actions } from "astro:actions";
+import { Button } from "@/components/ui/button";
+import { api } from "@/convex/_generated/api";
+import { UserEmail } from "./_admin.user-email";
+import Layout from "./_layout.astro";
+
+const result = Astro.getActionResult(actions.signOut);
+if (result?.data) return Astro.redirect(`/`);
+
+const token = await Astro.locals.auth.getToken();
+if (!token) return Astro.redirect("/signin");
+
+const isAuthenticated = await Astro.locals.convex.fetchQuery(api.auth.isAuthenticated, {}, { token });
+if (!isAuthenticated) return Astro.redirect("/signin");
+
+const preloaded = await Astro.locals.convex.preloadQuery(api.auth.getUserEmail, {}, { token });
+---
+
+<Layout>
+  <div class="flex flex-col gap-2">
+    <UserEmail client:load preloaded={preloaded} />
+    <form method="post" action={actions.signOut} class="flex">
+      <Button variant="secondary" className="w-full cursor-pointer"> Sign out </Button>
+    </form>
+  </div>
+</Layout>

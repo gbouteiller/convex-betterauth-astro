@@ -1,0 +1,46 @@
+---
+import { Button } from "@/components/ui/button";
+import "@/styles/global.css";
+import { ClientRouter } from "astro:transitions";
+---
+
+<script is:inline>
+	const getThemePreference = () => {
+		if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+			return localStorage.getItem('theme');
+		}
+		return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+	};
+	const isDark = getThemePreference() === 'dark';
+	document.documentElement.classList[isDark ? 'add' : 'remove']('dark');
+ 
+	if (typeof localStorage !== 'undefined') {
+		const observer = new MutationObserver(() => {
+			const isDark = document.documentElement.classList.contains('dark');
+			localStorage.setItem('theme', isDark ? 'dark' : 'light');
+		});
+		observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+	}
+</script>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/convex.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Astro</title>
+    <ClientRouter />
+  </head>
+  <body>
+    <header class="p-2 border-b-1">
+      <Button variant="ghost">
+        <a href="/">Home</a>
+      </Button>
+      <Button variant="ghost">
+        <a href="/admin">Admin</a>
+      </Button>
+    </header>
+    <main class="p-10"><slot /></main>
+  </body>
+</html>

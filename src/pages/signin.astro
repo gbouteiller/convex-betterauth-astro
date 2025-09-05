@@ -1,0 +1,36 @@
+---
+import { actions } from "astro:actions";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import Layout from "./_layout.astro";
+
+const result = Astro.getActionResult(actions.signIn);
+if (result?.data) return Astro.redirect(`/admin`);
+let flow = "signIn";
+const setFlow = (newFlow: "signIn" | "signUp") => {
+	flow = newFlow;
+};
+---
+
+<Layout>
+  <div class="flex flex-col gap-8 w-96 mx-auto h-screen justify-center items-center">
+			<form method="post" action={actions.signIn} class="flex flex-col gap-2">
+				<Input type="email" name="email" placeholder="Email" />
+				<Input type="password" name="password" placeholder="Password" />
+				<Button type="submit" className="cursor-pointer">
+					{flow === "signIn" ? "Sign in" : "Sign up"}
+				</Button>
+				<div class="flex gap-2">
+					<span>{flow === "signIn" ? "Don't have an account?" : "Already have an account?"}</span>
+					<Button variant="link" onClick={() => setFlow(flow === "signIn" ? "signUp" : "signIn")}>
+						{flow === "signIn" ? "Sign up instead" : "Sign in instead"}
+					</Button>
+				</div>
+				{result?.error && (
+					<div class="bg-red-500/20 border-2 border-red-500/50 rounded-md p-2">
+						<p class="text-foreground font-mono text-xs">Error signing in: {result.error}</p>
+					</div>
+				)}
+			</form>
+		</div>
+</Layout>

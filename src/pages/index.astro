@@ -1,0 +1,10 @@
+---
+import { api } from "@/convex/_generated/api";
+import Layout from "./_layout.astro";
+
+const title = await Astro.locals.convex.fetchQuery(api.pages.home);
+---
+
+<Layout>
+  <h1>{title}</h1>
+</Layout>
