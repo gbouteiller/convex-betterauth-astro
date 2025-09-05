@@ -58,6 +58,7 @@ export const getUserEmail = query({
 export const signIn = mutation({
 	args: { email: v.string(), password: v.string() },
 	handler: async (ctx, { email, password }) => {
+		console.log("signIn: ", { email, password });
 		const auth = createAuth(ctx);
 		const response = await auth.api.signInEmail({ body: { email, password }, asResponse: true });
 		return response.headers.get("set-cookie");

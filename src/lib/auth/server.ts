@@ -28,8 +28,9 @@ export const createAuth = (ctx: GenericCtx) =>
 			"https://convex-betterauth-astro.vercel.app",
 			"https://convex-betterauth-eta.vercel.app",
 			"https://convex-betterauth-tanstack.vercel.app",
+			"https://convex-betterauth-tanstack-query.vercel.app",
 		],
 		advanced: {
-			useSecureCookies: isLocalhost,
+			useSecureCookies: true,
 		},
 	});

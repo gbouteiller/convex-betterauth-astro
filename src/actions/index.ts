@@ -8,6 +8,7 @@ export const server = {
 		accept: "form",
 		input: z.object({ email: z.string(), password: z.string() }),
 		handler: async (input, { locals: { convex }, cookies }) => {
+			console.log("ACTION - signIn: ", input);
 			try {
 				const cookieHeader = await convex.fetchMutation(api.auth.signIn, input);
 				return setCookies(cookies, cookieHeader);
