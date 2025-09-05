@@ -1,7 +1,7 @@
 import { ActionError, defineAction } from "astro:actions";
 import { z } from "astro:schema";
 import { api } from "@/convex/_generated/api";
-import { deleteCookies, getToken, setCookies } from "@/lib/auth/utils";
+import { deleteCookies, getToken } from "@/lib/auth/utils";
 
 export const server = {
 	signIn: defineAction({
@@ -10,8 +10,9 @@ export const server = {
 		handler: async (input, { locals: { convex }, cookies }) => {
 			console.log("ACTION - signIn: ", input);
 			try {
-				const cookieHeader = await convex.fetchMutation(api.auth.signIn, input);
-				return setCookies(cookies, cookieHeader);
+				// const cookieHeader = await convex.fetchMutation(api.auth.signIn, input);
+				// return setCookies(cookies, cookieHeader);
+				return true;
 			} catch (error) {
 				console.error(error);
 				throw new ActionError({ code: "BAD_REQUEST", message: "Unknown error" });
