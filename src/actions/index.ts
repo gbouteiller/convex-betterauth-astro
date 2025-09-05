@@ -1,7 +1,5 @@
 import { defineAction } from "astro:actions";
 import { z } from "astro:schema";
-import { api } from "@/convex/_generated/api";
-import { deleteCookies, getToken } from "@/lib/auth/utils";
 
 export const server = {
 	signIn: defineAction({
@@ -22,10 +20,11 @@ export const server = {
 	}),
 	signOut: defineAction({
 		accept: "form",
-		handler: async (_, { cookies, locals: { convex } }) => {
-			const token = await getToken(cookies);
-			await convex.fetchMutation(api.auth.signOut, {}, { token });
-			return deleteCookies(cookies);
+		handler: async () => {
+			// const token = await getToken(cookies);
+			// await convex.fetchMutation(api.auth.signOut, {}, { token });
+			// return deleteCookies(cookies);
+			return true;
 		},
 	}),
 };
